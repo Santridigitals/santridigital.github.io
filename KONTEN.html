@@ -553,8 +553,9 @@ document.querySelector('.search-box').addEventListener('submit', function(event)
           const url = row[4];
     
           newRowDiv.addEventListener('click', function() {
-          const intentUrl = `intent://${url.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=com.android.chrome;end;`;
-          window.location.href = intentUrl;
+  const cleanUrl = url.replace(/^https?:\/\//, '');
+  const finalUrl = `https://${cleanUrl}`;
+  window.location.href = finalUrl;
 });
           newRow.appendChild(newRowDiv); // Insert the row div into the table
 
