@@ -1391,5 +1391,52 @@ function toggleChatContainer() {
  <div class="catatan2">
   <p class="login">Masuk akun dengan nama santri</p>
   </div>
+  <script>
+    // Fungsi untuk menyimpan kata kunci pencarian ke local storage
+    function saveSearchKeyword(keyword) {
+      localStorage.setItem('lastSearchKeyword', keyword);
+    }
+  
+    // Fungsi untuk memuat kata kunci pencarian terakhir dari local storage
+    function loadLastSearchKeyword() {
+      return localStorage.getItem('lastSearchKeyword');
+    }
+  
+    // Fungsi untuk memproses pencarian berdasarkan kata kunci yang tersimpan
+    function processSavedSearch() {
+      const lastKeyword = loadLastSearchKeyword();
+      if (lastKeyword) {
+        document.getElementById('searchInput').value = lastKeyword;
+        // Tunggu beberapa detik sebelum memproses pencarian untuk memastikan data sudah dimuat
+        setTimeout(() => {
+          searchTable();
+        }, 1000); // Penundaan selama 2 detik
+      }
+    }
+  
+    // Event listener untuk memproses pencarian yang tersimpan saat halaman dimuat
+    window.addEventListener('load', function() {
+      processSavedSearch();
+    });
+  
+    // Event listener untuk memproses pencarian saat form disubmit
+    document.querySelector('.search-box').addEventListener('submit', function(event) {
+      event.preventDefault(); // Mencegah pengiriman formulir secara default
+      const keyword = document.getElementById('searchInput').value.trim();
+      saveSearchKeyword(keyword); // Simpan kata kunci pencarian ke local storage
+      // Tunggu beberapa detik sebelum memproses pencarian untuk memastikan data sudah dimuat
+      setTimeout(() => {
+        searchTable();
+      }, 1000); // Penundaan selama 2 detik
+    });
+  </script>  
+<script>
+  // Fungsi untuk menghapus kata kunci pencarian dari local storage dan memuat ulang halaman
+  document.getElementById('refreshButton').addEventListener('click', function() {
+    localStorage.removeItem('lastSearchKeyword'); // Hapus kata kunci pencarian dari local storage
+    location.reload(); // Muat ulang halaman
+  });
+</script>
+
 </body>
 </html>
