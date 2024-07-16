@@ -1442,13 +1442,29 @@ function toggleChatContainer() {
   });
 </script>
 
+<button id="refreshButton" style="display: none;">Keluar</button>
+
 <script>
-  // Fungsi untuk menghapus kata kunci pencarian dari local storage dan memuat ulang halaman
+  // Event listener untuk tombol "Keluar" (refreshButton)
   document.getElementById('refreshButton').addEventListener('click', function() {
-    localStorage.removeItem('lastSearchKeyword'); // Hapus kata kunci pencarian dari local storage
-    location.reload(); // Muat ulang halaman
+    sessionStorage.removeItem('lastSearchKeyword'); // Hapus kata kunci pencarian dari sessionStorage
+    location.reload(); // Muat ulang halaman untuk mengembalikan tampilan ke keadaan semula
+  });
+
+  // Fungsi untuk memeriksa apakah ada kata kunci pencarian terakhir di sessionStorage saat halaman dimuat
+  function checkLastSearchKeyword() {
+    const lastKeyword = sessionStorage.getItem('lastSearchKeyword');
+    if (lastKeyword) {
+      document.getElementById('refreshButton').style.display = 'inline-block'; // Tampilkan tombol jika ada kata kunci tersimpan
+    }
+  }
+
+  // Panggil fungsi untuk memeriksa kata kunci saat halaman dimuat
+  window.addEventListener('load', function() {
+    checkLastSearchKeyword();
   });
 </script>
+
 
 </body>
 </html>
