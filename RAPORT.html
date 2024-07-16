@@ -1392,44 +1392,56 @@ function toggleChatContainer() {
   <p class="login">Masuk akun dengan nama santri</p>
   </div>
   <script>
-    // Fungsi untuk menyimpan kata kunci pencarian ke local storage
-    function saveSearchKeyword(keyword) {
-      localStorage.setItem('lastSearchKeyword', keyword);
-    }
-  
-    // Fungsi untuk memuat kata kunci pencarian terakhir dari local storage
-    function loadLastSearchKeyword() {
-      return localStorage.getItem('lastSearchKeyword');
-    }
-  
-    // Fungsi untuk memproses pencarian berdasarkan kata kunci yang tersimpan
-    function processSavedSearch() {
-      const lastKeyword = loadLastSearchKeyword();
-      if (lastKeyword) {
-        document.getElementById('searchInput').value = lastKeyword;
-        // Tunggu beberapa detik sebelum memproses pencarian untuk memastikan data sudah dimuat
-        setTimeout(() => {
-          searchTable();
-        }, 1000); // Penundaan selama 2 detik
-      }
-    }
-  
-    // Event listener untuk memproses pencarian yang tersimpan saat halaman dimuat
-    window.addEventListener('load', function() {
-      processSavedSearch();
-    });
-  
-    // Event listener untuk memproses pencarian saat form disubmit
-    document.querySelector('.search-box').addEventListener('submit', function(event) {
-      event.preventDefault(); // Mencegah pengiriman formulir secara default
-      const keyword = document.getElementById('searchInput').value.trim();
-      saveSearchKeyword(keyword); // Simpan kata kunci pencarian ke local storage
+  // Fungsi untuk menyimpan kata kunci pencarian ke sessionStorage
+  function saveSearchKeyword(keyword) {
+    sessionStorage.setItem('lastSearchKeyword', keyword);
+  }
+
+  // Fungsi untuk memuat kata kunci pencarian terakhir dari sessionStorage
+  function loadLastSearchKeyword() {
+    return sessionStorage.getItem('lastSearchKeyword');
+  }
+
+  // Fungsi untuk memproses pencarian berdasarkan kata kunci yang tersimpan
+  function processSavedSearch() {
+    const lastKeyword = loadLastSearchKeyword();
+    if (lastKeyword) {
+      document.getElementById('searchInput').value = lastKeyword;
       // Tunggu beberapa detik sebelum memproses pencarian untuk memastikan data sudah dimuat
       setTimeout(() => {
         searchTable();
-      }, 1000); // Penundaan selama 2 detik
-    });
-  </script>  
+      }, 2000); // Penundaan selama 2 detik
+    }
+  }
+
+  // Event listener untuk memproses pencarian yang tersimpan saat halaman dimuat
+  window.addEventListener('load', function() {
+    processSavedSearch();
+  });
+
+  // Event listener untuk memproses pencarian saat form disubmit
+  document.querySelector('.search-box').addEventListener('submit', function(event) {
+    event.preventDefault(); // Mencegah pengiriman formulir secara default
+    const keyword = document.getElementById('searchInput').value.trim();
+    saveSearchKeyword(keyword); // Simpan kata kunci pencarian ke sessionStorage
+    // Tunggu beberapa detik sebelum memproses pencarian untuk memastikan data sudah dimuat
+    setTimeout(() => {
+      searchTable();
+    }, 2000); // Penundaan selama 2 detik
+  });
+
+  // Fungsi untuk menghapus kata kunci pencarian dari sessionStorage
+  function clearSearchKeyword() {
+    sessionStorage.removeItem('lastSearchKeyword');
+  }
+
+  // Event listener untuk tombol "Keluar dari Pencarian"
+  document.getElementById('exitSearchButton').addEventListener('click', function() {
+    clearSearchKeyword(); // Hapus kata kunci pencarian dari sessionStorage
+    location.reload(); // Muat ulang halaman untuk mengembalikan tampilan ke keadaan semula
+  });
+</script>
+
 <script>
   // Fungsi untuk menghapus kata kunci pencarian dari local storage dan memuat ulang halaman
   document.getElementById('refreshButton').addEventListener('click', function() {
