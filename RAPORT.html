@@ -1410,7 +1410,7 @@ function toggleChatContainer() {
       // Tunggu beberapa detik sebelum memproses pencarian untuk memastikan data sudah dimuat
       setTimeout(() => {
         searchTable();
-      }, 2000); // Penundaan selama 2 detik
+      }, 1000); // Penundaan selama 2 detik
     }
   }
 
@@ -1427,7 +1427,7 @@ function toggleChatContainer() {
     // Tunggu beberapa detik sebelum memproses pencarian untuk memastikan data sudah dimuat
     setTimeout(() => {
       searchTable();
-    }, 2000); // Penundaan selama 2 detik
+    }, 1000); // Penundaan selama 2 detik
   });
 
   // Fungsi untuk menghapus kata kunci pencarian dari sessionStorage
@@ -1455,7 +1455,7 @@ function toggleChatContainer() {
   function checkLastSearchKeyword() {
     const lastKeyword = sessionStorage.getItem('lastSearchKeyword');
     if (lastKeyword) {
-      document.getElementById('refreshButton').style.display = 'inline-block'; // Tampilkan tombol jika ada kata kunci tersimpan
+      document.getElementById('refreshButton').style.display = 'NONE'; // Tampilkan tombol jika ada kata kunci tersimpan
     }
   }
 
