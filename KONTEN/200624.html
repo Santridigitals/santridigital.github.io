@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>Kisah</title>
     <style>
         body {
@@ -160,6 +161,125 @@
         font-size: 1em;
     }
 }
+.reaction-buttons {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 10px;
+            background-color: #f1f1f1;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .reaction-buttons button,
+        .reaction-buttons p {
+            background: none;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #333;
+        }
+
+        .reaction-buttons button:hover,
+        .reaction-buttons button:focus {
+            color: #007bff;
+        }
+
+        .reaction-buttons .icon {
+            font-size: 1.5em;
+        }
+
+        .liked {
+            color: #007bff;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .share-buttons button {
+            display: flex;
+            align-items: center;
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            width: 40px;
+            height: 40px;
+            justify-content: center;
+        }
+
+        .share-buttons button img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .share-buttons button:hover {
+            background: #0056b3;
+        }
+
+        .share-buttons .fa {
+            font-size: 1.2em;
+        }
+
+        .share-buttons #copyUrlButton {
+            background: #28a745;
+        }
+
+        .share-buttons #copyUrlButton:hover {
+            background: #218838;
+        }
+        footer{
+    background-color: rgb(0, 115, 135);
+}
+.social-logo {
+    height: 25px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+    margin-top: 15px;
+}
+.social-links a {
+    color: inherit; /* Menggunakan warna dari parent element */
+    text-decoration: none; /* Menghilangkan garis bawah */
+}
+.social-links a:visited {
+    color: inherit; /* Menggunakan warna dari parent element */
+}
+.social-links a:hover, a:active {
+    text-decoration: underline; /* Menambah garis bawah pada hover dan active */
+}
+         .share-buttons button {
+            background-color: #25D366; /* WhatsApp color */
+        }
+        .share-buttons button:last-child {
+            background-color: #3080f7; /* Default color for share button */
+        }
+        .share-buttons button img {
+            margin-right: 8px;
+            width: 20px;
+            height: 20px;
+        }
+.kontak {
+    height: 200px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 5px;
+}
+.copyright {
+    display: block;
+    height: 10px;
+    margin-bottom: 30px;
+    margin-top: -25px;
+    margin-left: 150px;
+}
     </style>
 </head>
 <body>
@@ -198,12 +318,121 @@
         <div class="story-paragraph">
             Mendengar jawaban itu, orang Yahudi tersebut pun masuk Islam.
         </div>
+        <article class="reaksi">
+            <div class="reaction-buttons">
+                <button id="likeButton">
+                    <span class="icon"><i class="fas fa-thumbs-up"></i></span> Like: <span id="likeCount">0</span>
+                </button>
+                <p><span class="icon"><i class="fas fa-eye"></i></span> Pengunjung: <span id="viewCount">0</span></p>
+            </div>
+            <div class="share-buttons">
+                <button id="shareWhatsApp">
+                    <i class="fab fa-whatsapp"></i>
+                </button>
+                <button id="shareOther">
+                    <i class="fas fa-share-alt"></i>
+                </button>
+                <button id="copyUrlButton">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+        </article>
+        <script>
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycby3YXpjJN0PBQbABp0ml1XhlpSDBjRbe7B3sSSlTrE5l_rNANf1Kng4sBgmU81EXCd7ow/exec';
+            const articleId = '200624IBN'; // Ganti dengan ID artikel yang sesuai
+        
+            async function fetchData(action) {
+                try {
+                    const response = await fetch(`${scriptUrl}?action=${action}&articleId=${articleId}`);
+                    if (!response.ok) throw new Error('Respon jaringan tidak oke');
+                    const data = await response.text();
+                    return data;
+                } catch (error) {
+                    console.error(`Kesalahan fetch: ${error}`);
+                    return '0'; // Mengembalikan '0' jika terjadi kesalahan
+                }
+            }
+        
+            async function getLike() {
+                const likeCount = await fetchData('getLike');
+                document.getElementById('likeCount').textContent = likeCount;
+            }
+        
+            async function setLike() {
+                const likeCount = await fetchData('setLike');
+                document.getElementById('likeCount').textContent = likeCount;
+            }
+        
+            async function getView() {
+                const viewCount = await fetchData('getView');
+                document.getElementById('viewCount').textContent = viewCount;
+            }
+        
+            async function setView() {
+                const viewCount = await fetchData('setView');
+                document.getElementById('viewCount').textContent = viewCount;
+            }
+        
+            document.getElementById('likeButton').addEventListener('click', async function() {
+                await setLike();
+                this.classList.add('liked');
+            });
+        
+            window.onload = async function() {
+                await getLike();
+                await getView();
+                await setView();
+            };
+        
+            document.getElementById('shareWhatsApp').addEventListener('click', function() {
+                const url = encodeURIComponent(window.location.href);
+                window.open(`https://wa.me/?text=${url}`, '_blank');
+            });
+        
+            document.getElementById('shareOther').addEventListener('click', function() {
+                if (navigator.share) {
+                    navigator.share({
+                        title: document.title,
+                        url: window.location.href
+                    }).catch(console.error);
+                } else {
+                    alert("Browser Anda tidak mendukung fitur berbagi.");
+                }
+            });
+            document.getElementById('copyUrlButton').addEventListener('click', function() {
+                const url = window.location.href;
+                navigator.clipboard.writeText(url).then(() => {
+                    alert("URL berhasil disalin ke clipboard!");
+                }).catch(err => {
+                    console.error("Gagal menyalin URL: ", err);
+                });
+            });
+        </script> 
     </div>
-</body>
-</html>
- 
             </article>
         </section>
     </div>
+    <footer>
+        <div class="footer-content">
+            <img src="../kontak.png" class="kontak" alt="kontak">
+        </div>
+    </footer>
+    <div class="social-links">
+      <a href="https://web.facebook.com/ppmu.grobogan" target="_blank">
+          <img src="../fb.png" alt="Facebook Logo" class="social-logo">
+      </a>
+      <a href="https://www.youtube.com/@PPMUGrobogan" target="_blank">
+          <img src="../yt.png" alt="YouTube Logo" class="social-logo">
+      </a>
+      <a href="https://www.instagram.com/ppmu.grobogan" target="_blank">
+          <img src="../ig.png" alt="Instagram Logo" class="social-logo">
+      </a>
+      <a href="https://www.tiktok.com/@ppmu.grobogan" target="_blank">
+          <img src="../tiktok.png" alt="TikTok Logo" class="social-logo">
+      </a>
+  </div>
+  <a href="#" target="_blank">
+      <img src="../copyright.png" alt="TikTok Logo" class="copyright">
+  </a>
 </body>
 </html>
